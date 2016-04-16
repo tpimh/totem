@@ -81,7 +81,7 @@ AC_SUBST(TOTEM_API_VERSION)
 AC_DEFINE_UNQUOTED(TOTEM_API_VERSION, ["$TOTEM_API_VERSION"], [Define to the Totem plugin API version])
 
 # The full list of plugins
-allowed_plugins="apple-trailers autoload-subtitles brasero-disc-recorder dbusservice im-status gromit lirc media-player-keys ontop opensubtitles properties pythonconsole recent rotation save-file samplepython sample-vala screensaver screenshot skipto zeitgeist-dp vimeo"
+allowed_plugins="apple-trailers autoload-subtitles brasero-disc-recorder dbusservice im-status gromit lirc media-player-keys ontop opensubtitles playlist-sidebar properties pythonconsole recent rotation save-file samplepython sample-vala screensaver screenshot skipto zeitgeist-dp vimeo"
 
 PLUGINDIR='${libdir}/totem/plugins'
 AC_SUBST(PLUGINDIR)
@@ -372,6 +372,15 @@ for plugin in ${used_plugins}; do
 				add_plugin="0"
 			fi
 		;;
+		playlist-sidebar)
+			if test "${with_vala}" != "yes" ; then
+				plugin_error_or_ignore "you need vala installed to use the playlist-sidebar plugin"
+				add_plugin="0"
+                        elif test "x$found_introspection" != "xyes"; then
+				plugin_error_or_ignore "you need introspection support for the playlist-sidebar plugin"
+				add_plugin="0"
+			fi
+		;;
 		rotation)
 			if test "${with_vala}" != "yes" ; then
 				plugin_error_or_ignore "you need vala installed to use the rotation plugin"
@@ -562,6 +571,7 @@ src/plugins/save-file/Makefile
 src/plugins/skipto/Makefile
 src/plugins/samplepython/Makefile
 src/plugins/sample-vala/Makefile
+src/plugins/playlist-sidebar/Makefile
 src/plugins/pythonconsole/Makefile
 src/plugins/pythonconsole/org.gnome.totem.plugins.pythonconsole.gschema.xml
 src/plugins/brasero-disc-recorder/Makefile

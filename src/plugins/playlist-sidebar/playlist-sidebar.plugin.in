@@ -1,0 +1,8 @@
+[Plugin]
+Module=playlist-sidebar
+IAge=1
+_Name=Playlist Sidebar
+_Description=Restore good old playlist on the right
+Authors=Dmitry Golovin <dima@golovin.in>
+Copyright=Copyright © 2016 Dmitry Golovin
+Website=http://blog.golovin.in/totem-playlist-sidebar/
