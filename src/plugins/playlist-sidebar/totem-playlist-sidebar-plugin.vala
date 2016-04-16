@@ -41,6 +41,7 @@ class PlaylistSidebarPlugin: GLib.Object, Peas.Activatable {
         playlist.insert_column_with_attributes(-1, "Title", cell, "text", 0);
         playlist.headers_visible = false;
         playlist.get_selection().mode = SelectionMode.BROWSE;
+        playlist.row_activated.connect(cb_activated);
 
         scroll.add(playlist);
 
@@ -61,6 +62,20 @@ class PlaylistSidebarPlugin: GLib.Object, Peas.Activatable {
     public void update_state() {
         // nothing to do here
     }
+
+    private void cb_activated(TreePath path, TreeViewColumn column) {
+        Totem.Object t = (Totem.Object)this.object;
+        uint selected = path.get_indices()[0];
+        uint current = t.get_playlist_pos();
+
+        if (selected > current) {
+            for (int i = 0; i < selected - current; i++)
+                t.remote_command(RemoteCommand.NEXT, "");
+        } else {
+            for (int i = 0; i < current - selected; i++)
+                t.remote_command(RemoteCommand.PREVIOUS, "");
+        }
+    } 
 
     private void cb_file_opened(string mrl) {
         Totem.Object t = (Totem.Object)this.object;
